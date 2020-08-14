@@ -1,7 +1,6 @@
 <template>
 
   <div id="app">
-    {{ count }}
     <b-container>
       <!-- TITLE : START -->
       <CTitle></CTitle>
@@ -43,7 +42,9 @@
       </b-row>
 
       <!-- LIST : START -->
-      <TodoListTable v-bind:listTask="listTaskSort" v-on:handleDelete="handleDelete" v-on:handleEdit="handleEdit"></TodoListTable>
+      <TodoListTable 
+      v-on:handleDelete="handleDelete" 
+      v-on:handleEdit="handleEdit"></TodoListTable>
     </b-container>
 
     <CPopup v-bind:isPopup="isPopup" v-on:handleClose="handleClose"></CPopup>
@@ -59,7 +60,6 @@ import CTitle from "./components/c-title";
 import CSort from "./components/c-sort";
 import CSearch from "./components/c-search";
 import CForm from "./components/c-from";
-import dataTask from "./data/task";
 import CPopup from "./components/c-popup";
 import { mapState } from 'vuex'
 
@@ -93,7 +93,7 @@ export default {
   computed:{
     ...mapState([
       
-      'count'
+      
       
     ]),
     listTaskSearch(){
@@ -118,14 +118,14 @@ export default {
   ,
   created(){
 
-      let listTaskLocal = localStorage.getItem('listTaskLocal');
-      console.log(listTaskLocal);
+      // let listTaskLocal = localStorage.getItem('listTaskLocal');
+      // console.log(listTaskLocal);
 
-      if(listTaskLocal !== null){
-          this.listTask = JSON.parse(listTaskLocal);
-      }else{
-        this.listTask = [];
-      }
+      // if(listTaskLocal !== null){
+      //     this.listTask = JSON.parse(listTaskLocal);
+      // }else{
+      //   this.listTask = [];
+      // }
 
   },
   methods:{

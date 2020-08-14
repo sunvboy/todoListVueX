@@ -1,5 +1,5 @@
+import dataTask from "../data/task";
+
 export default {
-    count: 100
-
-
+    listTask: dataTask
 }

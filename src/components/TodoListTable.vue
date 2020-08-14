@@ -38,19 +38,34 @@
 
 <script>
 import TodoListItem from "./TodoListItem";
+import { mapState } from 'vuex';
 export default {
   name: "todo-list",
   components: {
     TodoListItem,
   },
-  props: {
-      listTask: {type:Array,default:[]}
+  computed: {
+      ...mapState([
+        'listTask'
+
+      ])
   },
   data() {
     return {
         
 
     };
+  },created(){
+
+      let listTaskLocal = localStorage.getItem('listTaskLocal');
+      console.log(listTaskLocal);
+
+      if(listTaskLocal !== null){
+          this.listTask = JSON.parse(listTaskLocal);
+      }else{
+        this.listTask = [];
+      }
+
   },
   methods:{
     handleDelete(data){
