@@ -3,7 +3,7 @@
     <div class="input-group">
       <input 
       v-bind:value="strSearch"
-      v-on:input = "handleSearch"
+      v-on:input = "handleSearchInput"
       
       type="text" class="form-control" placeholder="Search for..." />
       <span class="input-group-append">
@@ -14,23 +14,28 @@
 </template>
 
 <script>
+import {mapState,mapActions} from 'vuex';
 export default {
   name: "c-search",
-  props: {
-    strSearch: {type: String,default:''}
-  },
   data() {
     return {};
   },
+  computed: {
+    ...mapState([
+      'strSearch'
+    ])
+  },
   methods:{
-    handleSearch(e){
-      this.$emit('handleSearch',e.target.value);
-
-
+    ...mapActions([
+      'handleSearch'
+    ]),
+    handleSearchInput(e){
+      //console.log('c-search',e.target.value);
+      this.handleSearch(e.target.value);
     },
     hanldeClear(){
-      this.$emit('handleSearch','');
-
+      //this.$store.dispatch('handleSearch','');
+      this.handleSearch();
     }
 
   }

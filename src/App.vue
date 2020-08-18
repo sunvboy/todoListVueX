@@ -10,41 +10,22 @@
         <b-col lg="6" cols="12">
           <b-row>
             <!-- SORT : START -->
-            <CSort
-            v-bind:orderTitle="orderTitle"
-            v-bind:orderDir="orderDir"
-            v-on:handleSort = "handleSort"
-            ></CSort>
+            <CSort></CSort>
             <!-- SORT : END -->
-
             <!-- SEARCH : START -->
-            <CSearch 
-            v-on:handleSearch = "handleSearch"
-            v-bind:strSearch="strSearch"
-            
-            ></CSearch>
-
+            <CSearch ></CSearch>
             <!-- SEARCH : END -->
           </b-row>
         </b-col>
         <!-- CONTROL (SEARCH + SORT + ADD) : END -->
-
-        
         <CForm 
-        v-on:handleUpdateTask="handleUpdateTask"
-        v-on:handleToogleForm="handleToogleForm" 
-        v-on:handleAddNewTask="handleAddNewTask" 
-        v-bind:isShowform="isShowform"
-        v-bind:taskSelected="taskSelected"
         
         ></CForm>
 
       </b-row>
 
       <!-- LIST : START -->
-      <TodoListTable 
-      v-on:handleDelete="handleDelete" 
-      v-on:handleEdit="handleEdit"></TodoListTable>
+      <TodoListTable></TodoListTable>
     </b-container>
 
     <CPopup v-bind:isPopup="isPopup" v-on:handleClose="handleClose"></CPopup>
@@ -75,108 +56,21 @@ export default {
   },
   data() {
     return {
-      listTask: null,
-      isShowform: false,
       isPopup: false,
-      strSearch: '',
-      orderTitle: 'title',
-      orderDir: 'asc',
-      taskSelected: null
     };
-  },watch:{
+  },
+  computed: { 
+    ...mapState(['listTask'])
+  },
+  watch:{
     listTask: function(newlistTask){
       var taskString = JSON.stringify(newlistTask);
       localStorage.setItem('listTaskLocal',taskString);
     }
-  }
-  ,
-  computed:{
-    ...mapState([
-      
-      
-      
-    ]),
-    listTaskSearch(){
-      let strSearch = this.strSearch.toLowerCase();
-      var newArray = [];
-      this.listTask.forEach(function(item,index){
-        if(item.title.toLowerCase().includes( strSearch ) === true){
-          newArray.push(item);
-
-        }
-      })
-
-      return newArray;
-    },
-    listTaskSort(){
-      var listTask = [...this.listTaskSearch];
-      listTask.sort(this.compareSort);
-     
-      return listTask;
-    }
-  }
-  ,
-  created(){
-
-      // let listTaskLocal = localStorage.getItem('listTaskLocal');
-      // console.log(listTaskLocal);
-
-      // if(listTaskLocal !== null){
-      //     this.listTask = JSON.parse(listTaskLocal);
-      // }else{
-      //   this.listTask = [];
-      // }
-
   },
   methods:{
-    handleUpdateTask(data){
-      let index = this.listTask.findIndex(item => item.id === data.id);
-      if(index !== -1){
-        this.listTask.splice(index, 1 , data);
-        this.handleToogleForm();
-      }
-      
-
-    },
-    handleAddNewTask(data){
-      this.listTask.push(data);
-    },
-    compareSort(a,b){
-      let numberSort = this.orderDir === 'asc' ? -1 : 1;
-      if(a[this.orderTitle] < b[this.orderTitle]) return numberSort;
-      else if(a[this.orderTitle] > b[this.orderTitle])  return numberSort*(-1);
-      return 0;
-
-    },
-    handleToogleForm(){
-      this.isShowform = !this.isShowform
-      if(!this.isShowform) this.taskSelected = null;
-
-    },
-    handleSearch(data){
-      this.strSearch = data;
-
-    },
-    handleSort(data){
-       this.orderTitle = data.orderTitle;
-       this.orderDir = data.orderDir;
-    },
-    handleDelete(data){
-    
-      this.listTask = this.listTask.filter(item => item.id !== data);
-      splice(indexDelete,1);
-
-    }
-    ,handleClose(){
-      
+   handleClose(){
       this.isPopup = !this.isPopup;
-    },
-    handleEdit(data){
-      
-      this.$emit('handleEdit',data);
-      this.taskSelected = data;
-      this.isShowform = true;
-
     }
   }
 };

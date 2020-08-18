@@ -20,8 +20,6 @@
            v-bind:key="task.id" 
            v-bind:index="index" 
            v-bind:task="task"
-           v-on:handleDelete = "handleDelete"
-           v-on:handleEdit = "handleEdit"
            
            
            ></TodoListItem>
@@ -37,47 +35,26 @@
 </template>
 
 <script>
+import { mapState,mapActions,mapGetters } from 'vuex';
 import TodoListItem from "./TodoListItem";
-import { mapState } from 'vuex';
 export default {
   name: "todo-list",
   components: {
     TodoListItem,
   },
   computed: {
-      ...mapState([
-        'listTask'
-
-      ])
+      ...mapGetters({
+        'listTask':'listTaskSearchSort'
+      })
   },
   data() {
     return {
         
 
     };
-  },created(){
-
-      let listTaskLocal = localStorage.getItem('listTaskLocal');
-      console.log(listTaskLocal);
-
-      if(listTaskLocal !== null){
-          this.listTask = JSON.parse(listTaskLocal);
-      }else{
-        this.listTask = [];
-      }
-
   },
   methods:{
-    handleDelete(data){
-      
-      this.$emit('handleDelete',data);
-
-    },
-    handleEdit(data){
-      
-      this.$emit('handleEdit',data);
-
-    }
+    ...mapActions(['changeTasks'])
   }
 };
 </script>

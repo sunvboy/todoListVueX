@@ -6,8 +6,8 @@
       <span class="badge " v-bind:class="getClassNameLevel">{{getNameLevel}}</span>
     </td>
     <td>
-      <button type="button" class="btn btn-warning" v-on:click="handleEdit()">Edit</button>
-      <button type="button" class="btn btn-danger" v-on:click="handleDelete(task.id)">Delete</button>
+      <button type="button" class="btn btn-warning" v-on:click="handleEditVue()">Edit</button>
+      <button type="button" class="btn btn-danger" v-on:click="handleDeleteVue(task.id)">Delete</button>
     </td>
   </tr>
   
@@ -15,24 +15,19 @@
 
 <script>
 import mapLevel from '../data/level';
+import { mapActions } from 'vuex';
 export default {
   name: "todo-list-item",
   props: {
     task: { type: Object, default: null },
     index: { type: Number },
   },
-  created(){ 
-
-  }
-  ,
   computed: {
     getNameLevel() {
- 
-    return this.mapLevel[this.task.level].name;
+      return this.mapLevel[this.task.level].name;
     },
     getClassNameLevel() {
-
-    return this.mapLevel[this.task.level].levelClass;
+      return this.mapLevel[this.task.level].levelClass;
     }
   },
   data() {
@@ -41,16 +36,14 @@ export default {
     };
   },
   methods:{
-    handleDelete(data){
-      
-
-      this.$emit('handleDelete',data);
-  
-
+    ...mapActions([
+      'handleDelete','handleEdit'
+    ]),
+    handleDeleteVue(ID){
+      this.handleDelete(ID)
     },
-    handleEdit(){
-      this.$emit('handleEdit',this.task);
-
+    handleEditVue(){
+      this.handleEdit(this.task)
     }
   }
 };
